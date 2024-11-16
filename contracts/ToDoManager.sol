@@ -15,6 +15,11 @@ contract TodoRoles {
         _;
     }
 
+    constructor() {
+        // Assign the contract deployer as an initial admin
+        admins[msg.sender] = true;
+    }
+
     // Add functions to assign roles if needed
     function addAdmin(address _admin) public onlyAdmin {
         admins[_admin] = true;
@@ -39,6 +44,8 @@ contract TodoManager is TodoRoles {
     event TodoCreated(uint256 indexed id, string title, uint256 deadline, string category);
 
     function createTodo(string calldata _title, uint256 _deadline, string calldata _category, address _assignedTo) public onlyUser {
+        require(_assignedTo != address(0), "Assigned address cannot be zero");
+        
         Todo memory newTodo = Todo({
             title: _title,
             completed: false,
@@ -52,6 +59,7 @@ contract TodoManager is TodoRoles {
     }
 
     function getTodo(uint256 _index) public view returns (string memory title, bool completed, uint256 deadline, string memory category, address assignedTo) {
+        require(_index < todos.length, "Todo index out of bounds");
         Todo storage todo = todos[_index];
         return (todo.title, todo.completed, todo.deadline, todo.category, todo.assignedTo);
     }
