@@ -9,7 +9,7 @@ const createContractInstanceOnEthereum = (contractAddress, contractAbi) => {
     const provider = new ethers.AlchemyProvider("sepolia", alchemyApiKey);
     console.log("provider", provider);
 
-    const privateKey = process.env.WALLET_PRIVATE_KEY;
+    const privateKey = process.env.WALLET_PRIVATE_KEY;git
     const wallet = new Wallet(privateKey, provider);
 
     const contract = new ethers.Contract(contractAddress, contractAbi, wallet);
